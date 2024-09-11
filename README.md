@@ -5,8 +5,6 @@ The corresponding paper is currently under Review in Environmental Data Science
 
 [![DOI](https://zenodo.org/badge/855790728.svg)](https://zenodo.org/badge/latestdoi/855790728)
 
-
-
 If you want to use this repository, start by executing
 ```
 conda env create -f environment.yml
