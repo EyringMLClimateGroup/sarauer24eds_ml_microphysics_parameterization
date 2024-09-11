@@ -3,7 +3,7 @@ This repository contains the code for the physics-informed machine learning para
 The corresponding paper is currently under Review in Environmental Data Science
 > Sarauer, Ellen, et al. "A physics-informed machine learning parameterization for cloud microphysics in ICON."
 
-[![DOI](https://zenodo.org/badge/855790728.svg)](https://zenodo.org/badge/latestdoi/855790728)
+[![DOI](https://zenodo.org/badge/108423302.svg)](https://zenodo.org/badge/latestdoi/108423302)
 
 If you want to use this repository, start by executing
 ```
