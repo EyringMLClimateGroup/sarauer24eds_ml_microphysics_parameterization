@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from build_regression_model import RegressionMLP, MassPositivityConservationLoss
 
 # Load data
-data_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/"
+data_path = "path/to/data/"
 set_train = np.load(data_path+"df_nextgems_mig_subset_regression_train.npy")
 set_val = np.load(data_path+"df_nextgems_mig_subset_regression_val.npy")
 set_test = np.load(data_path+"df_nextgems_mig_subset_regression_test.npy")
@@ -136,7 +136,8 @@ for i, score in enumerate(r2_scores):
 plt.plot(history)
 plt.xlabel("Epoch")
 plt.ylabel("Validation MSE")
-plt.savefig('/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/regression_history.png')
+out_path = "path/to/out"
+plt.savefig(out_path + 'regression_history.png')
 
 # Save the model
-torch.save(model, "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/regression_model_long.pt")
+torch.save(model, out_path + "regression_model_long.pt")

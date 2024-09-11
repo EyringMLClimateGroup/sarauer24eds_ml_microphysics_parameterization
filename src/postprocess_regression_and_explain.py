@@ -148,17 +148,17 @@ for i, (var_name, var_title, var_unit) in enumerate(variables_info):
     ax1.text(0.05, 0.95, f'$R^2 = {r2:.2f}$', transform=ax1.transAxes, fontsize=24, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
     ax1.grid(True, linestyle='--', linewidth=0.7, alpha=0.7)
     ax1.legend(loc='lower right', fontsize=24)
-    save_shap_summary_plot(shap_values[:, :, i], inputset_test_sampled, input_features, save_path="temp_plot.png")
-    with Image.open("temp_plot.png") as img:
+    save_shap_summary_plot(shap_values[:, :, i], inputset_test_sampled, input_features, save_path=out_path + "temp_plot.png")
+    with Image.open(out_path +"temp_plot.png") as img:
         img = img.convert("RGB")
-        img.save("resized_temp_plot.png")
-    img = plt.imread("resized_temp_plot.png")
+        img.save(out_path +"resized_temp_plot.png")
+    img = plt.imread(out_path +"resized_temp_plot.png")
     ax2.imshow(img)
     ax2.axis('off')
     fig.suptitle(f'Microphysics regression model for {var_title} [{var_unit}]', 
              fontsize=30, y=1.05, fontweight='bold') 
     plt.subplots_adjust(top=0.93, wspace=0.005)
     # Save the final figure
-    plt.savefig(out_path + f"combine_scatter_explain/{var_name}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(out_path + f"{var_name}.png", dpi=300, bbox_inches='tight')
     plt.close()
 

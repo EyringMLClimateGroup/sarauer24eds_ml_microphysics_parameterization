@@ -24,7 +24,8 @@ from torch.optim.lr_scheduler import StepLR
 from build_classifier_model import TriggerClassifier
 
 # Load data
-data_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/"
+data_path = "path/to/data/"
+out_path = "/path/to/out/"
 set_train = np.load(data_path + "df_nextgems_mig_subset_classify_train.npy")
 set_val = np.load(data_path + "df_nextgems_mig_subset_classify_val.npy")
 set_test = np.load(data_path + "df_nextgems_mig_subset_classify_test.npy")
@@ -95,7 +96,7 @@ for epoch in range(num_epochs):
     if val_loss < best_val_loss:
         best_val_loss = val_loss
         patience_counter = 0  # Reset counter
-        torch.save(model.state_dict(), '/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/classify_model_20.pth')  # Save the best model
+        torch.save(model.state_dict(), out_path + 'classify_model_20.pth')  # Save the best model
     else:
         patience_counter += 1
 
@@ -106,7 +107,7 @@ for epoch in range(num_epochs):
     scheduler.step()
 
 # Load the best model
-model.load_state_dict(torch.load('/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/classify_model_20.pth'))
+model.load_state_dict(torch.load( out_path + 'classify_model_20.pth'))
 
 # Plot training & validation loss values
 plt.figure(figsize=(12, 6))
@@ -116,7 +117,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Model Loss History')
 plt.legend()
-plt.savefig("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/classify_loss.png", dpi=300, bbox_inches='tight')
+plt.savefig( out_path + "classify_loss.png", dpi=300, bbox_inches='tight')
 plt.close()
 
 # Evaluate on test set
@@ -147,7 +148,7 @@ plt.title('Normalized Confusion Matrix of Microphysics Trigger Classifier', font
 plt.xticks(fontsize=14, rotation=45, ha="right", rotation_mode="anchor")
 plt.yticks(fontsize=14, rotation=0)
 plt.tight_layout()
-plt.savefig("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/confusion_matrix_normalized.png", dpi=300, bbox_inches='tight')
+plt.savefig(out_path + "confusion_matrix_normalized.png", dpi=300, bbox_inches='tight')
 
 # Plot the ROC curve
 fpr, tpr, _ = roc_curve(y_test_tensor.numpy(), y_test_pred.numpy())
@@ -163,4 +164,4 @@ plt.yticks(fontsize=14)
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend(loc='lower right', fontsize=14)
 plt.tight_layout()
-plt.savefig("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/roc_auc.png", dpi=300, bbox_inches='tight')
+plt.savefig(out_path + "roc_auc.png", dpi=300, bbox_inches='tight')

@@ -17,7 +17,7 @@ import glob
 from sklearn.utils import shuffle
 
 # Load netcdf files
-data_path = "/work/bd1179/b309246/experiments/r2b9_amip/coarse-grained-data/"
+data_path = "path/to/data/"
 # ml_varlist = 'ps', 'psl', 'rsdt', 'rsut', 'rsutcs', 'rlut', 'rlutcs',
 #              'rsds', 'rsdscs', 'rlds', 'rldscs', 'rsus', 'rsuscs', 'rlus',
 #              'ts', 'sic', 'sit', 'clt', 'prlr', 'prls', 'pr', 'prw',
@@ -127,9 +127,10 @@ set_val = data_final[num_train_samples:(num_train_samples+num_val_samples), :]
 set_test = data_final[(num_train_samples+num_val_samples):, :]
 
 # Save preprocessed files
-np.save("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/df_nextgems_mig_subset_classify_train.npy", set_train)
-np.save("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/df_nextgems_mig_subset_classify_val.npy", set_val)
-np.save("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/df_nextgems_mig_subset_classify_test.npy", set_test)
+out_path = "path/to/out/"
+np.save(out_path + "df_nextgems_mig_subset_classify_train.npy", set_train)
+np.save(out_path + "df_nextgems_mig_subset_classify_val.npy", set_val)
+np.save(out_path + "df_nextgems_mig_subset_classify_test.npy", set_test)
 
 # Check shapes
 print(set_train.shape)
