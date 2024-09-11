@@ -17,19 +17,19 @@ import torch.nn.functional as F
 # Regression MLP
 class RegressionMLP(nn.Module):
     
-    def __init__(self):
+    def __init__(self, max_nodes = 512, n_inputs = 8, n_outputs = 7):
         super(RegressionMLP, self).__init__()
         self.shared_network = nn.Sequential(
-            nn.Linear(8, 512),
+            nn.Linear(n_inputs, max_nodes),
             nn.ReLU(),
-            nn.Linear(512, 512),
+            nn.Linear(max_nodes, max_nodes),
             nn.ReLU(),
             nn.Dropout(0.2),
-            nn.Linear(512, 512),
+            nn.Linear(max_nodes, max_nodes),
             nn.ReLU()
         )
-        self.output_layer = nn.Linear(512, 7)
-        self.input_adjuster = nn.Linear(8, 7)
+        self.output_layer = nn.Linear(max_nodes, n_outputs)
+        self.input_adjuster = nn.Linear(n_inputs, n_outputs)
     
     def forward(self, x):
         x_shared = self.shared_network(x)
@@ -53,26 +53,24 @@ class MassPositivityConservationLoss(nn.Module):
 
     def forward(self, y_true, y_pred, x_inputs):
         
+        # model time step
+        time_step = 40
+
         # Rescale to physical values
         y_pred_rescaled = y_pred * self.std_y + self.mean_y
         x_inputs_rescaled = x_inputs[:, :] * self.std_x + self.mean_x
         mse_loss = nn.MSELoss()(y_true * self.std_y + self.mean_y, y_pred_rescaled)
         
-        # Constraint 1: Enforce X + tend_X * 40 >= 0
+        # Constraint 1: Enforce X + tend_X * time_step >= 0
         constraints = [
-            x_inputs_rescaled[:, 0] + y_pred_rescaled[:, 0] * 40,
-            x_inputs_rescaled[:, 1] + y_pred_rescaled[:, 1] * 40,
-            x_inputs_rescaled[:, 2] + y_pred_rescaled[:, 2] * 40,
-            x_inputs_rescaled[:, 3] + y_pred_rescaled[:, 3] * 40,
-            x_inputs_rescaled[:, 4] + y_pred_rescaled[:, 4] * 40,
-            x_inputs_rescaled[:, 5] + y_pred_rescaled[:, 5] * 40,
-            x_inputs_rescaled[:, 6] + y_pred_rescaled[:, 6] * 40
+            x_inputs_rescaled[:, i] + y_pred_rescaled[:, i] * time_step
+            for i in range(7)
         ]
         constraint_penalty = sum([torch.mean(F.relu(-constraint)) for constraint in constraints])
 
         # Constraint 2: Enforce conservation of total q*
         sum_q_initial = torch.sum(x_inputs_rescaled[:, :], dim=1)
-        sum_tend_q = torch.sum(y_pred_rescaled[:, :] * 40, dim=1)
+        sum_tend_q = torch.sum(y_pred_rescaled[:, :] * time_step, dim=1)
         conservation_penalty = torch.mean((sum_q_initial - (sum_q_initial + sum_tend_q)) ** 2)
         total_loss = mse_loss + constraint_penalty + conservation_penalty
         

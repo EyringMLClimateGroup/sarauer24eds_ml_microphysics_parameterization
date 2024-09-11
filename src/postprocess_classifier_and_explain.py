@@ -22,7 +22,7 @@ import shap
 from build_classifier_model import TriggerClassifier
 
 # Load data
-data_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/"
+data_path = "path/to/data/"
 set_test = np.load(data_path + "df_nextgems_mig_subset_classify_test.npy")
 X_test = set_test[:, 1:9]
 y_test = set_test[:, 9]
@@ -36,8 +36,9 @@ X_test_tensor = torch.tensor(X_test_scaled, dtype=torch.float32)
 y_test_tensor = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
 
 # Load the trained model
+model_path = "path/to/model/"
 model = TriggerClassifier()
-model.load_state_dict(torch.load('/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/classify_model.pth'))
+model.load_state_dict(torch.load(model_path + "classify_model.pth"))
 model.eval()
 
 # Predict model
@@ -90,7 +91,8 @@ def save_shap_summary_plot(shap_values, features, feature_names, save_path):
 input_features = ["air pressure", "temperature", "water vapor mmr", "cloud water mmr", "cloud ice mmr", "rain mmr", "snow mmr", "graupel mmr"]
 
 # Generate and save Shapley summary plot
-shap_summary_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/plots/shapley/explain_classification_subset.png"
+out_path = "path/to/out/"
+shap_summary_path = out_path + "explain_classification_subset.png"
 save_shap_summary_plot(
     shap_values_array, 
     features=X_test_subset, 
@@ -104,7 +106,7 @@ with torch.no_grad():
     y_test_pred = (test_outputs > 0.5).float()
 cm = confusion_matrix(y_test_tensor.numpy(), y_test_pred.numpy())
 cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-confusion_matrix_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/plots/combine_scatter_explain/confusion_matrix.png"
+confusion_matrix_path = out_path + "confusion_matrix.png"
 plt.figure(figsize=(10, 8))
 colors = ["#D0E5F2", "#A0C4E9", "#70A1D7", "#4081C6", "#003C7A"]
 cmap = mcolors.LinearSegmentedColormap.from_list("custom_blues", colors)
@@ -141,6 +143,6 @@ def combine_plots(confusion_matrix_path, shap_summary_path, output_path):
     plt.close()
 
 # Save the final figure
-combined_plot_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/plots/combine_scatter_explain/combined_plot.png"
+combined_plot_path = out_path + "combined_plot.png"
 combine_plots(confusion_matrix_path, shap_summary_path, combined_plot_path)
 print(f"Combined plot saved to {combined_plot_path}")

@@ -32,9 +32,10 @@ def get_common_exponent(data):
     return int(np.floor(np.log10(np.max(np.abs(data)))))
 
 # Load model and data
-ann_model = torch.load("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/regression_model.pt")
+model_path = "path/to/model/"
+ann_model = torch.load(model_path + "regression_model.pt")
 ann_model.eval()
-data_path = "/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/data/"
+data_path = "path/to/data/"
 set_test = np.load(data_path + "df_nextgems_mig_subset_regression_test.npy")
 
 # Standard scaling
@@ -88,11 +89,12 @@ def save_shap_summary_plot(shap_values, features, feature_names, save_path):
 output_nodes = ["tend_ta_mig", "tend_qv_mig", "tend_qc_mig", "tend_qi_mig", "tend_qr_mig", "tend_qs_mig", "tend_qg_mig"]
 
 # Generate and save Shapley summary plot for each output
+out_path = "path/to/out/"
 for i, node in enumerate(output_nodes):
-    save_shap_summary_plot(shap_values[:, :, i], inputset_test_sampled, input_features, f"/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/plots/shapley/explain_{node}.pdf")
+    save_shap_summary_plot(shap_values[:, :, i], inputset_test_sampled, input_features, out_path + f"explain_{node}.pdf")
 
 # Regression scatter plots
-model = torch.load("/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/models/regression_model_long.pt")
+model = torch.load(model_path + "regression_model_long.pt")
 model.eval()
 X_val = set_test_scaled[:, 1:9]
 y_val = set_test_scaled[:, 9:16]
@@ -157,6 +159,6 @@ for i, (var_name, var_title, var_unit) in enumerate(variables_info):
              fontsize=30, y=1.05, fontweight='bold') 
     plt.subplots_adjust(top=0.93, wspace=0.005)
     # Save the final figure
-    plt.savefig(f"/work/bd1179/b309246/phd_thesis/sarauer23_microphysics_parametrization/pytorch_nextgems/plots/combine_scatter_explain/{var_name}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(out_path + f"combine_scatter_explain/{var_name}.png", dpi=300, bbox_inches='tight')
     plt.close()
 
