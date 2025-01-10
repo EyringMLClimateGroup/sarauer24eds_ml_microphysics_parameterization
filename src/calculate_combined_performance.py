@@ -11,9 +11,9 @@ r2_scores = []
 
 # Load Data
 for varname in varnames:
-    true_path = f"/work/bd1179/b309246/experiments/r2b9_amip/coarse-grained-data/ml_tendencies/classical_mig/original_{varname}.nc"
+    true_path = f"/path/classical_mig/original_{varname}.nc"
     y_true = xr.open_dataset(true_path)
-    ml_path = f"/work/bd1179/b309246/experiments/r2b9_amip/coarse-grained-data/ml_tendencies/ml_mig/ml_regression_{varname}.nc"
+    ml_path = f"/path/ml_mig/ml_regression_{varname}.nc"
     y_pred = xr.open_dataset(ml_path)
     true_values = y_true[varname].values.flatten()
     ml_values = y_pred[varname].values.flatten()
