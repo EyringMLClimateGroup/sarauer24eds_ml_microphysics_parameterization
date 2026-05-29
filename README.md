@@ -1,9 +1,10 @@
 # A physics-informed machine learning parameterization for cloud microphysics in ICON
 This repository contains the code for the physics-informed machine learning parameterization for cloud microphysics in ICON. The simulation data used to train and evaluate the machine learning algorithms was generated with the ICON model. 
-The corresponding paper is currently under Review in Environmental Data Science
+The corresponding paper is published in Environmental Data Science:
 > Sarauer, Ellen, et al. "A physics-informed machine learning parameterization for cloud microphysics in ICON."
+> [![Link to paper](https://www.cambridge.org/core/journals/environmental-data-science/article/physicsinformed-machine-learning-parameterization-for-cloud-microphysics-in-icon/9EEF4A2B900F09D65475E62A3390C177)](https://www.cambridge.org/core/journals/environmental-data-science/article/physicsinformed-machine-learning-parameterization-for-cloud-microphysics-in-icon/9EEF4A2B900F09D65475E62A3390C177)
 
-[![DOI](https://zenodo.org/badge/855790728.svg)](https://zenodo.org/badge/latestdoi/855790728)
+The current release on zenodo can be found here: [![DOI](https://zenodo.org/badge/855790728.svg)](https://zenodo.org/badge/latestdoi/855790728)
 
 If you want to use this repository, start by executing
 ```
